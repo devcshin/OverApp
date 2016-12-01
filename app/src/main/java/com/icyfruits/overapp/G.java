@@ -9,7 +9,6 @@ public class G {
     public static String id=new String("");
 
     public static String check=new String("");
-    public static String checkname=new String("");
 
     public static int count;
 
