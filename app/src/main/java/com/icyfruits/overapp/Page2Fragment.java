@@ -121,11 +121,8 @@ public class Page2Fragment extends Fragment {
                         }
                     }
                 }.start();
-
             }
         });
-
-
         return view;
     }
 }
