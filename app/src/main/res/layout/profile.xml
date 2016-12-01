@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:hint="ID"
+        android:id="@+id/profileID"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <EditText
+        android:hint="이름"
+        android:id="@+id/profileName"
+
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/profileBtn"
+        android:layout_margin="8dp"
+        android:text="프로필수정"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="profileBtn1"
+        />
+
+</LinearLayout>

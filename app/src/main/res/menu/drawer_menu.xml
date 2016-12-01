@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_gallery"
+        android:title="Gallery"
+        android:icon="@android:drawable/ic_menu_gallery"/>
+
+    <item android:id="@+id/menu_section"
+        android:title="Second Section">
+
+        <menu>
+
+
+            <item android:id="@+id/menu_send"
+                android:title="Send"
+                android:icon="@android:drawable/ic_menu_send"/>
+
+            <item android:id="@+id/menu_calendar"
+                android:title="Membership"
+                android:icon="@android:drawable/ic_menu_my_calendar"/>
+
+
+        </menu>
+
+    </item>
+
+</menu>
