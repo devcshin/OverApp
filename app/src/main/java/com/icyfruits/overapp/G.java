@@ -14,4 +14,7 @@ public class G {
 
     public static String login_id;
     public static String login_pw;
+
+
+    
 }
