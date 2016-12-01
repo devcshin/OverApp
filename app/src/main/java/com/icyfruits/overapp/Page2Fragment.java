@@ -42,11 +42,7 @@ public class Page2Fragment extends Fragment {
 
     Button btn;
 
-    G g;
     EditText name1, msg1;
-    TextView text1, text2;
-    NavigationView navidrawer;
-    String name="";
 
     String server = "http://devc2016.dothome.co.kr/Android/insertDB.php";
 
