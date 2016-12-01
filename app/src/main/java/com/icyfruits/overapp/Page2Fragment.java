@@ -41,16 +41,12 @@ package com.icyfruits.overapp;
 public class Page2Fragment extends Fragment {
 
     Button btn;
-
-    EditText name1, msg1;
-
+    EditText msg1;
     String server = "http://devc2016.dothome.co.kr/Android/insertDB.php";
-
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_page1, container, false);
 
         /////////////////////////////////
@@ -62,8 +58,6 @@ public class Page2Fragment extends Fragment {
 
 /////////////////////////////////////////////////////////
 
-
-//        name1 = (EditText) view.findViewById(R.id.name_edit);
         msg1 = (EditText) view.findViewById(R.id.msg_edit);
         btn = (Button) view.findViewById(R.id.save1);
 
