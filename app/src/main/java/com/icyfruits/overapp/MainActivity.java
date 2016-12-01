@@ -69,10 +69,7 @@ public class MainActivity extends AppCompatActivity {
             text1.setText(G.login_id);
         }
 
-
         image = (ImageView)header.findViewById(R.id.image);
-/////////////////////////////////////////////////////////
-
 
         intent= new Intent(this, SecondActivity.class);
         intent2= new Intent(this, ThirdActivity.class);
@@ -127,8 +124,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             //스코롤되면
@@ -137,14 +132,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-
             //80프로 이상 넘기면
             @Override
             public void onPageSelected(int position) {
                 tabHost.setCurrentTab(position);
             }
-
-
 
             @Override
             public void onPageScrollStateChanged(int state) {
@@ -154,8 +146,6 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout =(DrawerLayout)findViewById(R.id.drawer_layout);
         navigationView =(NavigationView)findViewById(R.id.navi_drawer);
-
-
 
         //회색으로 아이템 처리하는거 없애는 메소드
         navigationView.setItemIconTintList(null);
@@ -200,26 +190,18 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Send 준비중", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.menu_calendar:
-
                         startActivity(member);
-
                         //Toast.makeText(MainActivity.this, "Calendar 준비중", Toast.LENGTH_SHORT).show();
                         break;
                 }
-
-
                 return false;
             }
         });
     }
 
-
-
     public void clickHeaderIcon(View v){
-
         //결과를 받기위한 목적을 갖고있는 intent
         startActivityForResult(intentProfile,1);
-
 //       Toast.makeText(this, "Icon Click", Toast.LENGTH_SHORT).show();
 //        if(image==null){
 //            Toast.makeText(this, "sdfsdf", Toast.LENGTH_SHORT).show();
