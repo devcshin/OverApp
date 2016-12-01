@@ -32,7 +32,6 @@ public class Member extends AppCompatActivity {
     String id, pw, mail, hp, data;
     String server = "http://devc2016.dothome.co.kr/Android/meminstdb.php";
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +42,6 @@ public class Member extends AppCompatActivity {
         this.textemail = (EditText) findViewById(R.id.text_email);
         this.textpw = (EditText) findViewById(R.id.text_pw);
         this.textid = (EditText) findViewById(R.id.text_id);
-
 
         btnsubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +70,6 @@ public class Member extends AppCompatActivity {
                             os.close();
 
                             //서버에코 // w지금은 생략
-
                             InputStream is = connection.getInputStream();
                             InputStreamReader isr = new InputStreamReader(is);
                             BufferedReader reader = new BufferedReader(isr);
@@ -85,7 +82,6 @@ public class Member extends AppCompatActivity {
                                 line = reader.readLine();
                             }
 
-
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -93,7 +89,6 @@ public class Member extends AppCompatActivity {
                                     textpw.setText("");
                                     textemail.setText("");
                                     texthp.setText("");
-
 
                                     Toast.makeText(Member.this, buffer.toString(), Toast.LENGTH_SHORT).show();
                                 }
@@ -108,20 +103,14 @@ public class Member extends AppCompatActivity {
 
                     }
                 }.start();
-
             }
         });
-
         btncancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
-
     }
-
-
 }
 
