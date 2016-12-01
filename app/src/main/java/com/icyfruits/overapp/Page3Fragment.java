@@ -23,10 +23,8 @@ public class Page3Fragment extends Fragment {
 
         View view=inflater.inflate(R.layout.fragment_page3,container,false);
         this.adview = (AdView) view.findViewById(R.id.adview);
-
         AdRequest adRequest = new AdRequest.Builder().build();
         adview.loadAd(adRequest);
-
         return view;
     }
 }

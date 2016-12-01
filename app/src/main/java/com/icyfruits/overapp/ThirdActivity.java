@@ -12,7 +12,6 @@ public class ThirdActivity extends AppCompatActivity {
 //
 //        ActionBar actionBar = getSupportActionBar();
 //        actionBar.setTitle("Third");
-
         getSupportActionBar().setTitle("third here");
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 

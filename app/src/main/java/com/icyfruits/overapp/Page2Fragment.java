@@ -110,7 +110,6 @@ public class Page2Fragment extends Fragment {
 //                                    .setMessage(buffer.toString())
 //                                    .setPositiveButton("OK",null).create().show();
 
-
 //                                    name1.setText("");
                                     msg1.setText("");
 
