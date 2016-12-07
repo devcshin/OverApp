@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         this.viewpager = (ViewPager) findViewById(R.id.viewpager);
         this.tabcontent = (FrameLayout) findViewById(android.R.id.tabcontent);
         this.tabs = (TabWidget) findViewById(android.R.id.tabs);
-<<<<<<< HEAD
 
         /////////////////////////////////
         View header = navidrawer.getHeaderView(0);
@@ -85,20 +84,6 @@ public class MainActivity extends AppCompatActivity {
         text1=(TextView)header.findViewById(R.id.text1);
         text2=(TextView)header.findViewById(R.id.text2);
 
-=======
-
-        /////////////////////////////////
-        View header = navidrawer.getHeaderView(0);
-
-        //DISK DATA 가져오기
-        SharedPreferences pref = getSharedPreferences("count",MODE_PRIVATE);
-        G.count=pref.getInt("key",0);
-        G.login_id=pref.getString("id","");
-
-        text1=(TextView)header.findViewById(R.id.text1);
-        text2=(TextView)header.findViewById(R.id.text2);
-
->>>>>>> parent of 25e8fd9... not working
         if(G.login_id.equals("")){
             text1.setText("안녕하세요");
         }else{
@@ -106,9 +91,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         image = (ImageView)header.findViewById(R.id.image);
-<<<<<<< HEAD
->>>>>>> parent of 25e8fd9... not working
-=======
 >>>>>>> parent of 25e8fd9... not working
 
         intent= new Intent(this, SecondActivity.class);
@@ -192,11 +174,8 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout =(DrawerLayout)findViewById(R.id.drawer_layout);
         navigationView =(NavigationView)findViewById(R.id.navi_drawer);
 <<<<<<< HEAD
-<<<<<<< HEAD
 
 
-=======
->>>>>>> parent of 25e8fd9... not working
 =======
 >>>>>>> parent of 25e8fd9... not working
 
@@ -257,7 +236,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 <<<<<<< HEAD
-<<<<<<< HEAD
 
 
     public void clickHeaderIcon(View v){
@@ -265,11 +243,6 @@ public class MainActivity extends AppCompatActivity {
         //결과를 받기위한 목적을 갖고있는 intent
         startActivityForResult(intentProfile,1);
 
-=======
-    public void clickHeaderIcon(View v){
-        //결과를 받기위한 목적을 갖고있는 intent
-        startActivityForResult(intentProfile,1);
->>>>>>> parent of 25e8fd9... not working
 =======
     public void clickHeaderIcon(View v){
         //결과를 받기위한 목적을 갖고있는 intent
