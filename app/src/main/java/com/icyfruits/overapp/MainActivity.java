@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
         /////////////////////////////////
         View header = navidrawer.getHeaderView(0);
-<<<<<<< HEAD
 
         //DISK DATA 가져오기
         SharedPreferences pref = getSharedPreferences("count",MODE_PRIVATE);
@@ -74,24 +73,6 @@ public class MainActivity extends AppCompatActivity {
         image = (ImageView)header.findViewById(R.id.image);
 /////////////////////////////////////////////////////////
 
-=======
-
-        //DISK DATA 가져오기
-        SharedPreferences pref = getSharedPreferences("count",MODE_PRIVATE);
-        G.count=pref.getInt("key",0);
-        G.login_id=pref.getString("id","");
-
-        text1=(TextView)header.findViewById(R.id.text1);
-        text2=(TextView)header.findViewById(R.id.text2);
-
-        if(G.login_id.equals("")){
-            text1.setText("안녕하세요");
-        }else{
-            text1.setText(G.login_id);
-        }
-
-        image = (ImageView)header.findViewById(R.id.image);
->>>>>>> parent of 25e8fd9... not working
 
         intent= new Intent(this, SecondActivity.class);
         intent2= new Intent(this, ThirdActivity.class);
@@ -173,11 +154,8 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout =(DrawerLayout)findViewById(R.id.drawer_layout);
         navigationView =(NavigationView)findViewById(R.id.navi_drawer);
-<<<<<<< HEAD
 
 
-=======
->>>>>>> parent of 25e8fd9... not working
 
         //회색으로 아이템 처리하는거 없애는 메소드
         navigationView.setItemIconTintList(null);
@@ -235,7 +213,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-<<<<<<< HEAD
 
 
     public void clickHeaderIcon(View v){
@@ -243,11 +220,6 @@ public class MainActivity extends AppCompatActivity {
         //결과를 받기위한 목적을 갖고있는 intent
         startActivityForResult(intentProfile,1);
 
-=======
-    public void clickHeaderIcon(View v){
-        //결과를 받기위한 목적을 갖고있는 intent
-        startActivityForResult(intentProfile,1);
->>>>>>> parent of 25e8fd9... not working
 //       Toast.makeText(this, "Icon Click", Toast.LENGTH_SHORT).show();
 //        if(image==null){
 //            Toast.makeText(this, "sdfsdf", Toast.LENGTH_SHORT).show();
