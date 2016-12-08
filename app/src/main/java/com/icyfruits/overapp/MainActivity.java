@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView profileImage;
     private TextView btnLogout;
 
+    int a;
+
     Bitmap bitmap;
 
     User user;
