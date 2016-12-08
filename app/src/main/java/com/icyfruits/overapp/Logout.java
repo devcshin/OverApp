@@ -24,6 +24,7 @@ import java.net.URL;
 public class Logout extends AppCompatActivity {
     private ImageView profileImage;
     private TextView btnLogout;
+    int a;
 
     Bitmap bitmap;
     User user;
