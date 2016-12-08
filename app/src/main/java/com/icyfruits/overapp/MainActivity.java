@@ -136,38 +136,8 @@ public class MainActivity extends AppCompatActivity {
         if (G.login_id.equals("")) {
             text1.setText("안녕하세요");
         } else {
-            //fetching Image
-            new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... params) {
-                    URL imageURL = null;
-                    try {
-//                    String s = getResources().getString(R.string.facebook_app_id);
-                        imageURL = new URL(("https://graph.facebook.com/" + user.facebookID + "/picture?type=large"));
 
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }
-
-                @Override
-                protected void onPostExecute(Void aVoid) {
-                    super.onPostExecute(aVoid);
-                    image.setImageBitmap(bitmap);
-//                showgender.setText(user.gender);
-                    text1.setText(user.name);
-                    text2.setText(user.email);
-                }
-            }.execute();
-
-
-            //text1.setText(G.login_id);
+            text1.setText(G.login_id);
         }
 
 
@@ -364,6 +334,47 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //fetching Image
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                URL imageURL = null;
+                try {
+//                    String s = getResources().getString(R.string.facebook_app_id);
+                    imageURL = new URL(("https://graph.facebook.com/" + user.facebookID + "/picture?type=large"));
 
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            image.setImageBitmap(bitmap);
+//                showgender.setText(user.gender);
+                            text1.setText(user.name);
+                            text2.setText(user.email);
+                        }
+                    });
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+            }
+        }.execute();
+
+
+    }
 }
 

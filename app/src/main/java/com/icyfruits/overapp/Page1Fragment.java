@@ -206,6 +206,8 @@ public class Page1Fragment extends Fragment {
 //
 //                        }
 
+                        //todo noti가 계속되는 문제가 있다
+
                         if (num == rows.length - 1) {
                             if (!G.check.equals(name)) {
                                 if(G.count==items.size()||G.count==0)break;

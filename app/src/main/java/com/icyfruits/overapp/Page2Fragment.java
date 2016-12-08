@@ -52,7 +52,7 @@ public class Page2Fragment extends Fragment {
         /////////////////////////////////
 //        navidrawer = (NavigationView) view.findViewById(R.id.navi_drawer);
 //        View header = navidrawer.getHeaderView(0);
-////// TODO: 2016-11-03
+
 //        text1=(TextView)header.findViewById(R.id.text1);
 //        text2=(TextView)header.findViewById(R.id.text2);
 
@@ -81,7 +81,10 @@ public class Page2Fragment extends Fragment {
                             connection.setDoInput(true);
                             connection.setUseCaches(false);
 
-                            String data = "name=" + G.login_id + "&message=" + message;
+
+                            //username
+//                            String data = "name=" + G.login_id + "&message=" + message;
+                            String data = "name=" + User.name + "&message=" + message;
 
                             G.check=G.login_id;
 

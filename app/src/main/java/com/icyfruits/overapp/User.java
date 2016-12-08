@@ -6,9 +6,9 @@ package com.icyfruits.overapp;
 
 public class User {
 
-    public String name;
-    public String email;
-    public String facebookID;
-    public String gender;
+    public static String name;
+    public static String email;
+    public static String facebookID;
+    public static String gender;
 
 }
