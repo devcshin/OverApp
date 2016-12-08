@@ -1,7 +1,14 @@
 package com.icyfruits.overapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -11,6 +18,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -20,7 +29,28 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.widget.LoginButton;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class MainActivity extends AppCompatActivity {
+    private ImageView profileImage;
+    private TextView btnLogout;
+
+    Bitmap bitmap;
+
+    User user;
+    private TextView showname;
+    private TextView showgender;
+    private TextView showmail;
 
     FragmentTabHost tabHost;
     ViewPager pager;
@@ -30,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     Intent intent, intent2, intentProfile, member;
     TextView text1, text2;
+    private CallbackManager callbackManager;
+    private LoginButton loginButton;
+    private ProgressDialog progressDialog;
+
+    private android.widget.TextView btnLogin;
+    private LoginButton loginbutton;
 
     //버튼달자
     ActionBarDrawerToggle drawerToggle;
@@ -45,50 +81,105 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //DISK DATA 가져오기
+        SharedPreferences pref = getSharedPreferences("count", MODE_PRIVATE);
+        G.count = pref.getInt("key", 0);
+        G.login_id = pref.getString("id", "");
+        /////////////////////////////////
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.icyfruits.overapp", PackageManager.GET_SIGNATURES
+            );
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+
         this.drawerlayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         this.navidrawer = (NavigationView) findViewById(R.id.navi_drawer);
         this.tabhost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         this.viewpager = (ViewPager) findViewById(R.id.viewpager);
         this.tabcontent = (FrameLayout) findViewById(android.R.id.tabcontent);
         this.tabs = (TabWidget) findViewById(android.R.id.tabs);
-
-        /////////////////////////////////
         View header = navidrawer.getHeaderView(0);
 
-        //DISK DATA 가져오기
-        SharedPreferences pref = getSharedPreferences("count",MODE_PRIVATE);
-        G.count=pref.getInt("key",0);
-        G.login_id=pref.getString("id","");
+        image = (ImageView) header.findViewById(R.id.image);
 
-        text1=(TextView)header.findViewById(R.id.text1);
-        text2=(TextView)header.findViewById(R.id.text2);
-
-        if(G.login_id.equals("")){
-            text1.setText("안녕하세요");
-        }else{
-            text1.setText(G.login_id);
-        }
-
-        image = (ImageView)header.findViewById(R.id.image);
-
-        intent= new Intent(this, SecondActivity.class);
-        intent2= new Intent(this, ThirdActivity.class);
-        member=new Intent(this, Member.class);
+        intent = new Intent(this, SecondActivity.class);
+        intent2 = new Intent(this, ThirdActivity.class);
+        member = new Intent(this, Member.class);
         intentProfile = new Intent(this, Profile.class);
 
 
+        text1 = (TextView) header.findViewById(R.id.text1);
+        text2 = (TextView) header.findViewById(R.id.text2);
 
-        tabHost= (FragmentTabHost)findViewById(android.R.id.tabhost);
+        int a;
+
+
+        //왜 못받아올까
+        if (G.login_id.equals("")) {
+            text1.setText("안녕하세요");
+        } else {
+            //fetching Image
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    URL imageURL = null;
+                    try {
+//                    String s = getResources().getString(R.string.facebook_app_id);
+                        imageURL = new URL(("https://graph.facebook.com/" + user.facebookID + "/picture?type=large"));
+
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    super.onPostExecute(aVoid);
+                    image.setImageBitmap(bitmap);
+//                showgender.setText(user.gender);
+                    text1.setText(user.name);
+                    text2.setText(user.email);
+                }
+            }.execute();
+
+
+            //text1.setText(G.login_id);
+        }
+
+
+        tabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
 
         //탭버튼(탭스펙) 추가작업을 위한 셋업명령(메소드)
-        tabHost.setup(this,getSupportFragmentManager(),android.R.id.tabcontent);
+        tabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);
 
 
-        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("Post BOX"),DummyFragment.class,null);
-        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("Letter"),DummyFragment.class,null);
-        tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("Calendar"),DummyFragment.class,null);
+        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("Post BOX"), DummyFragment.class, null);
+        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("Letter"), DummyFragment.class, null);
+        tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("Calendar"), DummyFragment.class, null);
 
-        pager=(ViewPager)findViewById(R.id.viewpager);
+        pager = (ViewPager) findViewById(R.id.viewpager);
         adapter = new PageAdapter(getSupportFragmentManager());
         //두개 만들었다
 
@@ -112,14 +203,14 @@ public class MainActivity extends AppCompatActivity {
 //                    case:
 //                    break;
 //                }
-                if(tabId.equals("tab1")){
-                    pager.setCurrentItem(0,true);
+                if (tabId.equals("tab1")) {
+                    pager.setCurrentItem(0, true);
 
 
-                }else if(tabId.equals("tab2")){
-                    pager.setCurrentItem(1,true);
-                }else if(tabId.equals("tab3")){
-                    pager.setCurrentItem(2,true);
+                } else if (tabId.equals("tab2")) {
+                    pager.setCurrentItem(1, true);
+                } else if (tabId.equals("tab3")) {
+                    pager.setCurrentItem(2, true);
                 }
             }
         });
@@ -144,13 +235,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        drawerLayout =(DrawerLayout)findViewById(R.id.drawer_layout);
-        navigationView =(NavigationView)findViewById(R.id.navi_drawer);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) findViewById(R.id.navi_drawer);
 
         //회색으로 아이템 처리하는거 없애는 메소드
         navigationView.setItemIconTintList(null);
 
-        drawerToggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.app_name,R.string.app_name){
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 //여기다가 효과 넣으면 됨
@@ -178,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.menu_gallery:
 
                         Toast.makeText(MainActivity.this, G.login_id, Toast.LENGTH_SHORT).show();
@@ -199,9 +290,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void clickHeaderIcon(View v){
+    public void clickHeaderIcon(View v) {
         //결과를 받기위한 목적을 갖고있는 intent
-        startActivityForResult(intentProfile,1);
+        startActivityForResult(intentProfile, 1);
 //       Toast.makeText(this, "Icon Click", Toast.LENGTH_SHORT).show();
 //        if(image==null){
 //            Toast.makeText(this, "sdfsdf", Toast.LENGTH_SHORT).show();
@@ -211,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //        image.setBackgroundResource(R.mipmap.ic_launcher);
 
-    //    ((ImageView)v).setImageResource(R.drawable.kei);
+        //    ((ImageView)v).setImageResource(R.drawable.kei);
     }
     //액션바의 메뉴를 클릭하는 이벤트를 듣는 리스너를 통해 클릭상태를 전달
 
@@ -225,11 +316,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 //        Toast.makeText(this,"aaa",Toast.LENGTH_SHORT).show();
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
 //            Toast.makeText(this,"bbb",Toast.LENGTH_SHORT).show();
             drawerLayout.closeDrawer(navidrawer);
 
-        }else{
+        } else {
 //            Toast.makeText(this,"ccc",Toast.LENGTH_SHORT).show();
             moveTaskToBack(true);
         }
@@ -244,10 +335,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
 
-        SharedPreferences pref= getSharedPreferences("count",MODE_PRIVATE);
-        SharedPreferences.Editor editor =pref.edit();
-        editor.putInt("key",G.count);
-        editor.putString("id",G.login_id);
+        SharedPreferences pref = getSharedPreferences("count", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("key", G.count);
+        editor.putString("id", G.login_id);
         editor.commit();
         super.onStop();
     }
@@ -255,20 +346,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        switch (requestCode){
+        switch (requestCode) {
             case 1:
-                if(resultCode==RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     String name = data.getStringExtra("name");
 //                    String id = data.getStringExtra("id");
-                    text1.setText(""+G.id);
-                    text2.setText(""+name);
+                    text1.setText("" + G.id);
+                    text2.setText("" + name);
 
-                    G.login_id=G.id;
+                    G.login_id = G.id;
 
                 }
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+
 }
 
