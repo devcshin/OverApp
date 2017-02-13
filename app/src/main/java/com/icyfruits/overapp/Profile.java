@@ -55,10 +55,19 @@ public class Profile extends Activity {
         setContentView(R.layout.profile);
 
 
+
+
+
     }
-
-
-//        FacebookSdk.sdkInitialize(getApplicationContext());
+//
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+////        overridePendingTransition(R.anim.sliderend, R.anim.slider);
+//        finish();
+//
+//    }
+    //        FacebookSdk.sdkInitialize(getApplicationContext());
 //        AppEventsLogger.activateApp(this);
 //
 //        try {
@@ -143,6 +152,7 @@ public class Profile extends Activity {
                     Intent intent = new Intent(Profile.this, MainActivity.class);
                     startActivity(intent);
                     finish();
+//                    overridePendingTransition(R.anim.sliderend, R.anim.slider);
                 }
             });
 
@@ -156,9 +166,14 @@ public class Profile extends Activity {
 
         }
 
+
+
+
         @Override
         public void onCancel() {
             progressDialog.dismiss();
+//            overridePendingTransition(R.anim.sliderend, R.anim.slider);
+
 
         }
 
@@ -166,6 +181,7 @@ public class Profile extends Activity {
         public void onError(FacebookException error) {
 
             progressDialog.dismiss();
+//            overridePendingTransition(R.anim.sliderend, R.anim.slider);
         }
     };
 
@@ -193,4 +209,7 @@ public class Profile extends Activity {
 //        });
 
 
+    //현재 액티비티 종료 시
+
 }
+

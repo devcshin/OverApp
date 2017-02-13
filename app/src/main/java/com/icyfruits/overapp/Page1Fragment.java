@@ -12,7 +12,9 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,6 +43,7 @@ public class Page1Fragment extends Fragment {
 
     ArrayList<BoardItem> items = new ArrayList<>();
     String name = null;
+    FloatingActionButton floatingActionButton;
 
 
     ListView listView;
@@ -48,6 +51,14 @@ public class Page1Fragment extends Fragment {
 
     Timer timer = new Timer();
 
+//    SwipeRefreshLayout swipeRefreshLayout;
+
+
+
+    public void refresh(){
+        loadDB();
+
+    }
 
     void noti() {
         NotificationManager manager
@@ -60,13 +71,13 @@ public class Page1Fragment extends Fragment {
         builder.setSmallIcon(R.mipmap.icon2);
         //상태표시줄에 나오는 아이콘
 
-        builder.setTicker("문자왔숑"); //상태표시줄에 잠시 보이는(보였다가 사라짐) 글씨
+        builder.setTicker("새로운 내용이 있습니다"); //상태표시줄에 잠시 보이는(보였다가 사라짐) 글씨
 
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.icon2);
         //상태바를 드래그 하여 아래로 내리면 보이는 알림창.(확장형 상태바)의 설정.
         //큰아이콘 설정.
         builder.setLargeIcon(bm); // 그림말고 비트맵달라고 하니까 비트맵으로 만들어서 넘겨줌/
-        builder.setContentTitle("문자왔숑");
+        builder.setContentTitle("새로운 내용이 있습니다");
         //  builder.setContentText("Message Values");
 
         //진동 추가
@@ -107,8 +118,12 @@ public class Page1Fragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        timer.schedule(task, 2000, 1000);
+//        timer.schedule(task, 2000, 1000);
+        refresh();
+
     }
+
+
 
     @Override
     public void onDestroy() {
@@ -124,8 +139,28 @@ public class Page1Fragment extends Fragment {
 ////////////////////////////////////////////
 
         listView = (ListView) view.findViewById(R.id.listview2);
+        floatingActionButton = (FloatingActionButton)view.findViewById(R.id.refreshbtn1);
         boardAdapter = new BoardAdapter(inflater, items);
         listView.setAdapter(boardAdapter);
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadDB();
+                swipeRefreshLayout.setRefreshing(false);
+
+            }
+
+        });
+
+
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        });
 
         //getActivity().getResources() 메인 액티비티에서 데려올때/
 
@@ -139,12 +174,18 @@ public class Page1Fragment extends Fragment {
         return view;
     }
 
-    TimerTask task = new TimerTask() {
-        @Override
-        public void run() {
-            loadDB();
-        }
-    };
+
+
+
+//
+//    TimerTask task = new TimerTask() {
+//        @Override
+//        public void run() {
+//            loadDB();
+//        }
+//    };
+
+
 
     void loadDB() {
         //서버에 있는 loadDB.php를 통해서 DB정보 읽어오기.

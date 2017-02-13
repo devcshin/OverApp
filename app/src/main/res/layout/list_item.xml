@@ -23,8 +23,7 @@
                 android:id="@+id/text_name"
                 android:text="name"
                 android:layout_marginBottom="8dp"
-                android:textStyle="bold"
-                android:textSize="24sp"
+                android:textSize="22sp"
                 android:textColor="@android:color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

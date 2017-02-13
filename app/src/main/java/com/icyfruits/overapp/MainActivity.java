@@ -10,12 +10,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -41,6 +43,8 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MainActivity extends AppCompatActivity {
     private ImageView profileImage;
     private TextView btnLogout;
@@ -57,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
     FragmentTabHost tabHost;
     ViewPager pager;
     PageAdapter adapter;
-    ImageView image;
+//    ImageView image;
+    CircleImageView image;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Intent intent, intent2, intentProfile, member;
@@ -78,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navidrawer;
     private DrawerLayout drawerlayout;
 
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -89,6 +96,9 @@ public class MainActivity extends AppCompatActivity {
         G.count = pref.getInt("key", 0);
         G.login_id = pref.getString("id", "");
         /////////////////////////////////
+//        swipeRefreshLayout.findViewById(R.id.listview2);
+//        swipeRefreshLayout.setOnRefreshListener((SwipeRefreshLayout.OnRefreshListener) this);
+
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
@@ -118,7 +128,8 @@ public class MainActivity extends AppCompatActivity {
         this.tabs = (TabWidget) findViewById(android.R.id.tabs);
         View header = navidrawer.getHeaderView(0);
 
-        image = (ImageView) header.findViewById(R.id.image);
+//        image = (ImageView) header.findViewById(R.id.image);
+        image = (CircleImageView)header.findViewById(R.id.image);
 
         intent = new Intent(this, SecondActivity.class);
         intent2 = new Intent(this, ThirdActivity.class);
@@ -243,6 +254,9 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.menu_gallery:
+                        Intent gal = new Intent(Intent.ACTION_PICK);
+                        gal.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                        startActivity(gal);
 
                         Toast.makeText(MainActivity.this, G.login_id, Toast.LENGTH_SHORT).show();
                         //startActivity(intent);
@@ -250,7 +264,13 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.menu_send:
                         //startActivity(intent2);
-                        Toast.makeText(MainActivity.this, "Send 준비중", Toast.LENGTH_SHORT).show();
+                        Intent msg = new Intent(Intent.ACTION_SEND);
+//                        msg.addCategory(Intent.CATEGORY_DEFAULT);
+                        msg.putExtra(Intent.EXTRA_TEXT,"https://play.google.com/store/apps/details?id=com.icyfruits.overapp");
+
+//                        Toast.makeText(MainActivity.this, "공유", Toast.LENGTH_SHORT).show();
+                        msg.setType("text/plain");
+                        startActivity(Intent.createChooser(msg, getResources().getText(R.string.app_name)));
                         break;
                     case R.id.menu_calendar:
                         startActivity(member);
@@ -265,6 +285,8 @@ public class MainActivity extends AppCompatActivity {
     public void clickHeaderIcon(View v) {
         //결과를 받기위한 목적을 갖고있는 intent
         startActivityForResult(intentProfile, 1);
+        overridePendingTransition(R.anim.slider, R.anim.sliderend);
+//        finish();
 //       Toast.makeText(this, "Icon Click", Toast.LENGTH_SHORT).show();
 //        if(image==null){
 //            Toast.makeText(this, "sdfsdf", Toast.LENGTH_SHORT).show();

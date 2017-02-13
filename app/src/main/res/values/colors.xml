@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#83daca</color>
+    <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#efc95f</color>
 
-    <color name="card">#83daca</color>
+    <color name="card">#232323</color>
     <color name="white">#fbf6c6</color>
-    <color name="back">#d9eeeb</color>
-    <color name="font">#666666</color>
-    <color name="profile">#569b8d</color>
+    <color name="back">#cecece</color>
+    <color name="font">#252525</color>
+    <color name="profile">#54204e</color>
 </resources>
